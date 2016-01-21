@@ -326,7 +326,8 @@ module Mongoid #:nodoc
 
     def migrations
       @migrations ||= begin
-        files = Dir["#{@migrations_path}/[0-9]*_*.rb"]
+        files = []
+        @migrations_path.each { |path| files.concat(Dir["#{path}/[0-9]*_*.rb"]) }
 
         migrations = files.inject([]) do |klasses, file|
           version, name = file.scan(/([0-9]+)_([_a-z0-9]*).rb/).first
